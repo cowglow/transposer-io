@@ -12,21 +12,38 @@ const NoteInput = () => {
     setNotes(newNotes.join(separator));
   };
 
-  const changeHandler: React.KeyboardEventHandler = (
+  const resetInput = () => setNotes("");
+
+  const keyHandler: React.KeyboardEventHandler = (
     event: React.KeyboardEvent<HTMLInputElement>
   ): void => {
-    if (event.keyCode === 8) {
-      const noteArr = notes.split(separator);
-      const newNoteArr = noteArr.splice(0, noteArr.length - 1);
-      setNotes(newNoteArr.join(separator));
-    }
+    if (!event.ctrlKey) {
+      // Delete
+      if (event.keyCode === 46) {
+        resetInput();
+      }
 
-    if (isNote(event.key)) {
-      const newValue = event.key.toUpperCase();
-      if (notes) {
-        setNotes(notes + separator + newValue);
+      // Backspace
+      if (event.keyCode === 8) {
+        const noteArr = notes.split(separator);
+        const newNoteArr = noteArr.splice(0, noteArr.length - 1);
+        setNotes(newNoteArr.join(separator));
+      }
+      // alphabetical
+      if (isNote(event.key)) {
+        const newValue = event.key.toUpperCase();
+        if (notes) {
+          setNotes(notes + separator + newValue);
+        } else {
+          setNotes(newValue);
+        }
       } else {
-        setNotes(newValue);
+        if (
+          event.currentTarget.selectionStart !==
+          event.currentTarget.selectionEnd
+        ) {
+          resetInput();
+        }
       }
     }
   };
@@ -38,7 +55,8 @@ const NoteInput = () => {
         id=""
         cols={30}
         rows={10}
-        onKeyDown={changeHandler}
+        onKeyDown={keyHandler}
+        onChange={() => {}}
         value={notes}
       />
       <div>
