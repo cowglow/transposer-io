@@ -1,9 +1,10 @@
 import React from "react";
+import styles from "./note-input.module.css";
 import { TransposeNotes } from "../../lib/transpose-notes";
 import { isNote } from "../../lib/note-range";
 
 const NoteInput = () => {
-  const separator = ",";
+  const separator = "-";
   const [notes, setNotes] = React.useState<string>("");
 
   const clickHandler = (direction: string) => {
@@ -49,7 +50,7 @@ const NoteInput = () => {
   };
 
   return (
-    <React.Fragment>
+    <div className={styles.root}>
       <textarea
         name=""
         id=""
@@ -75,7 +76,7 @@ const NoteInput = () => {
           -
         </button>
       </div>
-    </React.Fragment>
+    </div>
   );
 };
 
